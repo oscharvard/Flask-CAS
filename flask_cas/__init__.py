@@ -98,7 +98,7 @@ def login_required(function):
         if current_app.config['DEBUG']:
             return function(*args, **kwargs)
         if 'CAS_USERNAME' not in flask.session:
-            flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.path
+            flask.session['CAS_AFTER_LOGIN_SESSION_URL'] = flask.request.script_root + flask.request.path
             return login()
         else:
             return function(*args, **kwargs)

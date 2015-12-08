@@ -8,17 +8,20 @@ import textwrap
 if __name__ == "__main__":
     setuptools.setup(
         name="Flask-CAS",
-        version="1.0.0",
+        version="0.0.1",
         description="Flask extension for CAS",
-        author="Cameron Brandon White",
-        author_email="cameronbwhite90@gmail.com",
-        url="https://github.com/cameronbwhite/Flask-CAS",
+        author="Ben Steinberg",
+        author_email="benjamin_steinberg@harvard.edu",
+        url="",
         long_description=textwrap.dedent("""\
             Flask-CAS
             =========
 
             Flask-CAS is a Flask extension which makes it easy to
-            authenticate with a CAS.
+            authenticate with a CAS. This version is customized for
+            the Harvard Library Office for Scholarly Communication
+            from Cameron White's version at
+            https://github.com/cameronbwhite/Flask-CAS.
 
             CAS
             ===

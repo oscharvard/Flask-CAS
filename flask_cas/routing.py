@@ -4,7 +4,7 @@ from flask import current_app
 from .cas_urls import create_cas_login_url
 from .cas_urls import create_cas_logout_url
 from .cas_urls import create_cas_validate_url
-
+from .osc_ldap import ldap_lookup
 
 try:
     from urllib import urlopen
@@ -122,10 +122,11 @@ def validate(ticket):
         current_app.logger.debug("valid")
         xml_from_dict = xml_from_dict["cas:serviceResponse"]["cas:authenticationSuccess"]
         username = xml_from_dict["cas:user"]
+        attributes = ldap_lookup(username)
         try:
-            attributes = xml_from_dict["cas:attributes"]
+            attributes.update(xml_from_dict["cas:attributes"])
         except:
-            attributes = []
+            pass
 
         if "cas:memberOf" in attributes:
             attributes["cas:memberOf"] = attributes["cas:memberOf"].lstrip('[').rstrip(']').split(',')

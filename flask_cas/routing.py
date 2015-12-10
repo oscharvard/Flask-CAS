@@ -4,12 +4,13 @@ from flask import current_app
 from .cas_urls import create_cas_login_url
 from .cas_urls import create_cas_logout_url
 from .cas_urls import create_cas_validate_url
-from .osc_ldap import ldap_lookup
 
 try:
     from urllib import urlopen
 except ImportError:
     from urllib.request import urlopen
+
+import hashlib
 
 blueprint = flask.Blueprint('cas', __name__)
 
@@ -122,7 +123,7 @@ def validate(ticket):
         current_app.logger.debug("valid")
         xml_from_dict = xml_from_dict["cas:serviceResponse"]["cas:authenticationSuccess"]
         username = xml_from_dict["cas:user"]
-        attributes = ldap_lookup(username)
+        attributes = { "dash:person_id": dash_md5(username) }
         try:
             attributes.update(xml_from_dict["cas:attributes"])
         except:
@@ -139,3 +140,9 @@ def validate(ticket):
         current_app.logger.debug("invalid")
 
     return isValid
+
+def dash_md5(username):
+    m = hashlib.md5()
+    m.update(username)
+    m.update(current_app.config['DASH_SALT'])
+    return m.hexdigest()

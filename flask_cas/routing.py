@@ -67,8 +67,8 @@ def logout():
     cas_username_session_key = current_app.config['CAS_USERNAME_SESSION_KEY']
     cas_attributes_session_key = current_app.config['CAS_ATTRIBUTES_SESSION_KEY']
 
-    pp = pprint.PrettyPrinter(indent=4)
-    current_app.logger.info("User logged out: %s" % (pp.pformat(flask.session[cas_attributes_session_key]),))
+    pp = pprint.PrettyPrinter(indent=0)
+    current_app.logger.info("User logged out: %s" % (pp.pformat(flask.session[cas_attributes_session_key]).replace("\n", " "),))
 
     if cas_username_session_key in flask.session:
         del flask.session[cas_username_session_key]
@@ -141,8 +141,8 @@ def validate(ticket):
         flask.session[cas_username_session_key] = username
         flask.session[cas_attributes_session_key] = attributes
 
-        pp = pprint.PrettyPrinter(indent=4)
-        current_app.logger.info("User logged in: %s" % (pp.pformat(attributes),))
+        pp = pprint.PrettyPrinter(indent=0)
+        current_app.logger.info("User logged in: %s" % (pp.pformat(attributes).replace("\n", " "),))
     else:
         current_app.logger.debug("invalid")
 

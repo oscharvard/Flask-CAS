@@ -67,8 +67,11 @@ def logout():
     cas_username_session_key = current_app.config['CAS_USERNAME_SESSION_KEY']
     cas_attributes_session_key = current_app.config['CAS_ATTRIBUTES_SESSION_KEY']
 
-    pp = pprint.PrettyPrinter(indent=0)
-    current_app.logger.info("User logged out: %s" % (pp.pformat(flask.session[cas_attributes_session_key]).replace("\n", " "),))
+    try:
+        pp = pprint.PrettyPrinter(indent=0)
+        current_app.logger.info("User logged out: %s" % (pp.pformat(flask.session[cas_attributes_session_key]).replace("\n", " "),))
+    except:
+        pass
 
     if cas_username_session_key in flask.session:
         del flask.session[cas_username_session_key]

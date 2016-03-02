@@ -11,6 +11,7 @@ except ImportError:
     from urllib.request import urlopen
 
 import hashlib
+import pprint
 
 blueprint = flask.Blueprint('cas', __name__)
 

@@ -8,7 +8,7 @@ import textwrap
 if __name__ == "__main__":
     setuptools.setup(
         name="Flask-CAS",
-        version="0.0.2",
+        version="0.0.3",
         description="Flask extension for CAS",
         author="Ben Steinberg",
         author_email="benjamin_steinberg@harvard.edu",

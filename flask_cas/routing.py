@@ -130,9 +130,15 @@ def validate(ticket):
         current_app.logger.debug("valid")
         xml_from_dict = xml_from_dict["cas:serviceResponse"]["cas:authenticationSuccess"]
         username = xml_from_dict["cas:user"]
-        attributes = { "dash:person_id": dash_md5(username) }
+        attributes = {}
         try:
             attributes.update(xml_from_dict["cas:attributes"])
+        except:
+            pass
+
+        try:
+            attributes.update({ "dash:person_id": dash_md5(attributes['cas:harvardEduIdNumber']) })
+            del attributes['cas:harvardEduIdNumber']
         except:
             pass
 
@@ -141,6 +147,7 @@ def validate(ticket):
             for group_number in range(0, len(attributes['cas:memberOf'])):
                 attributes['cas:memberOf'][group_number] = attributes['cas:memberOf'][group_number].lstrip(' ').rstrip(' ')
 
+        # I think we never use this
         flask.session[cas_username_session_key] = username
         flask.session[cas_attributes_session_key] = attributes
 

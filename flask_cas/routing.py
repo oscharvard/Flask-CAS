@@ -137,10 +137,23 @@ def validate(ticket):
             pass
 
         try:
-            attributes.update({ "dash:person_id": dash_md5(attributes['cas:harvardEduIdNumber']) })
+            attributes.update({
+                "dash:person_id": dash_md5(attributes['cas:harvardEduIdNumber']),
+                "dash:person_id_source": "huid"
+            })
             del attributes['cas:harvardEduIdNumber']
         except:
-            pass
+            try:
+                attributes.update({
+                    "dash:person_id": dash_md5(attributes['cas:eduPersonPrincipalName']),
+                    "dash:person_id_source": "eppn"
+                })
+            except:
+                current_app.logger.warning("Could not generate person ID from HUID or EPPN -- using %s %s" % (attributes['cas:authenticationType'], username))
+                attributes.update({
+                    "dash:person_id": dash_md5(username),
+                    "dash:person_id_source": "username:%s" % (attributes['cas:authenticationType'],)
+                })
 
         if "cas:memberOf" in attributes:
             attributes["cas:memberOf"] = attributes["cas:memberOf"].lstrip('[').rstrip(']').split(',')

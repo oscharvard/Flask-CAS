@@ -172,6 +172,8 @@ def validate(ticket):
     return isValid
 
 def dash_md5(username):
+    if isinstance(username, str):
+        username = username.encode('utf-8')
     m = hashlib.md5()
     m.update(username)
     m.update(current_app.config['DASH_SALT'])
